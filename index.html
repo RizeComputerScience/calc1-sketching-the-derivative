@@ -7,30 +7,229 @@
 <meta name="description" content="Calculus I: Sketching the Derivative.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400;1,7..72,500&amp;family=Public+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=STIX+Two+Text:ital,wght@0,400;0,500;1,400;1,500&amp;family=Kalam:wght@400&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&amp;family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;family=Edu+VIC+WA+NT+Beginner:wght@400..700&amp;family=STIX+Two+Text:ital,wght@0,400;0,500;1,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
 <script>try{if(localStorage.getItem('rize-calc1-mode')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
 <style>
-/* Calc I theme: Slate Board. Reading on a page; worked lines and figures on a dark slate board in chalk colors.
-   Dark is the default; [data-theme="light"] is the student's toggle. Color roles: --inside = input / inside of a composite,
-   --outside = output / outside, --rate = rate (speed, slope, derivative), --k-* = a specific value plugged in. */
+/* Refined theme ("A refined", the house design since 2026-10-25). Book typography (Libre Caslon Display for titles,
+   Libre Caslon Text for prose, math and controls, STIX Two for operators, a teacher's hand for annotations), a calm
+   card-free page, worked math and live figures on a quiet board, feedback as a mark, a word and one line of help.
+   Role colors are the rize palette's (PALETTE.md); neutrals are paper and board. Dark is the default here because the
+   engine's toggle is; [data-theme="light"] is the student's choice. Rules for using it: STANDARDS.md, "The House Design".
+   The theme loads before base.css, so its rules that override base.css carry an html prefix. Tokens only below the
+   two token blocks; palette_check.py reads the first two blocks. */
 :root{color-scheme:dark;
-  --bg:#121513;--surface:#1A1E1C;--ink:#E7EAE5;--muted:#9DA59F;--line:#2D332F;--soft:#202522;--grid:#24302B;
-  --inside:#93BDF0;--inside-tint:#1A2738;--outside:#F0A877;--outside-tint:#38251A;--rate:#E59BC6;--rate-tint:#34192A;
-  --k-tint:#5C4E10;--k-line:#D9BC2E;--ok:#8FCB9C;--ok-tint:#18301E;--bad:#F29C93;--bad-tint:#3A1A17;--focus:#93BDF0;
-  --b-bg:#1F2824;--b-ink:#ECEFE8;--b-muted:#AEB8B1;--b-line:#33403A;--b-in:#8FC3FF;--b-in-t:#22364A;--b-out:#FFB27A;--b-out-t:#4A3222;--b-rate:#F7A3CF;--b-rate-t:#45263A;--b-val:#FFE680;--b-val-t:rgba(255,230,128,.20);
-  --serif:'Literata','Iowan Old Style',Georgia,serif;--sans:'Public Sans','Segoe UI',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
-  --math:'STIX Two Text','Cambria Math',Georgia,serif;--anno:'Kalam','Segoe Print','Comic Neue',cursive;}
+  --bg:#111920;--surface:#0D141A;--panel:#1A242D;--soft:#22303B;--line:#2B3946;--grid:#24323D;--line-strong:#6C7B8A;
+  --ink:#E8EDF1;--muted:#AEBDC5;--hand:#D3DCE4;--accent:#D3DCE4;--on-accent:#111920;--focus:#E8EDF1;
+  --inside:#3FA7FF;--inside-tint:#15304D;--outside:#FFA566;--outside-tint:#3D2717;--rate:#DC75B8;--rate-tint:#3E1F33;
+  --k-tint:#4C4307;--k-line:#FFE100;--ok:#7DD49A;--ok-tint:#173324;--bad:#FF8D84;--bad-tint:#42201E;--hint:#A8BCCE;--hint-tint:#1C2A36;
+  --s1:#4495EA;--s2:#E07227;--s3:#00AA95;--s4:#886ACF;--s5:#B5900A;--s6:#CD5394;
+  --display:'Libre Caslon Display','Libre Caslon Text',Georgia,serif;--serif:'Libre Caslon Text','Iowan Old Style',Georgia,serif;
+  --sans:'Libre Caslon Text','Iowan Old Style',Georgia,serif;--math:'Libre Caslon Text','STIX Two Text','Cambria Math',Georgia,serif;
+  --op:'STIX Two Text','Cambria Math',Georgia,serif;--anno:'Edu VIC WA NT Beginner','Segoe Print','Bradley Hand',cursive;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;}
 :root[data-theme="light"]{color-scheme:light;
-  --bg:#F3F4F1;--surface:#FFFFFF;--ink:#1A1D1B;--muted:#5B625E;--line:#D6DAD5;--soft:#ECEEEA;--grid:#E3E7E2;
-  --inside:#23599E;--inside-tint:#E2EAF5;--outside:#A64B12;--outside-tint:#F7E6DA;--rate:#9A2E6E;--rate-tint:#F4E2EC;
-  --k-tint:#FFE680;--k-line:#C9A800;--ok:#2A6B3B;--ok-tint:#E1F0E4;--bad:#A8261D;--bad-tint:#F8E2DF;--focus:#23599E;
-  --b-bg:#26302C;--b-ink:#ECEFE8;--b-muted:#B4BEB7;--b-line:#3A4741;--b-in:#8FC3FF;--b-in-t:#2A4056;--b-out:#FFB27A;--b-out-t:#55392A;--b-rate:#F7A3CF;--b-rate-t:#4E2B42;--b-val:#FFE680;--b-val-t:rgba(255,230,128,.20);}
-/* the board: worked lines and figures re-scope the tokens, so every component inside turns to chalk without its own rules */
-.workbox,.pfig,.overview,.gwrap,.partsfig,.board,.gv{--bg:var(--b-bg);--surface:var(--b-bg);--ink:var(--b-ink);--muted:var(--b-muted);--line:var(--b-line);--soft:var(--b-line);
-  --inside:var(--b-in);--inside-tint:var(--b-in-t);--outside:var(--b-out);--outside-tint:var(--b-out-t);--rate:var(--b-rate);--rate-tint:var(--b-rate-t);--k-tint:var(--b-val-t);--k-line:var(--b-val);
-  background:var(--b-bg);color:var(--b-ink);border-color:transparent}
-.pfig,.overview,.gwrap,.partsfig,.gv{border-radius:12px;padding:12px}
-.pfig svg text,.overview svg text,.gwrap svg text,.partsfig svg text,.gv svg text{font-family:var(--anno)}
+  --bg:#FAFBFC;--surface:#FFFFFF;--panel:#EDF1F4;--soft:#EFF2F5;--line:#D2D9E0;--grid:#DCE3E9;--line-strong:#728090;
+  --ink:#14202A;--muted:#5E6771;--hand:#253645;--accent:#253645;--on-accent:#FAFBFC;--focus:#14202A;
+  --inside:#0053BE;--inside-tint:#E3ECFB;--outside:#B14500;--outside-tint:#FAEADC;--rate:#8F1563;--rate-tint:#F8E4EF;
+  --k-tint:#FFE771;--k-line:#A78700;--ok:#1C7340;--ok-tint:#E0F2E5;--bad:#B1251D;--bad-tint:#FBE6E4;--hint:#3B5469;--hint-tint:#E4ECF3;
+  --s1:#1A63CE;--s2:#D86500;--s3:#009784;--s4:#6441A9;--s5:#A68300;--s6:#AE2C77;}
+
+/* ---------- type ---------- */
+html body{font-size:19px;line-height:1.65;font-variant-numeric:lining-nums;background:var(--bg)}
+html h1,html h2,html h3{font-weight:400;letter-spacing:-.01em;text-wrap:balance}
+html .mo{font-family:var(--op);font-weight:500}
+html .mv{padding-right:.04em}
+html .pr.in,html .pr.out{font-weight:400}
+html span.in,html .ml .in :is(.mn,.mv,.mf,.mo),html :is(.mn,.mv,.mf,.mo).in{text-decoration:none}
+html .rt{font-weight:inherit}
+html .k{background:linear-gradient(97deg,transparent .08em,var(--k-tint) .2em,var(--k-tint) calc(100% - .2em),transparent calc(100% - .08em));box-shadow:none;border-radius:.2em .35em .25em .3em;font-weight:inherit;padding:0 .16em}
+html a,html .link,html .fixlink{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line-strong);text-decoration-thickness:1.5px;text-underline-offset:.22em;font-weight:inherit}
+html a:hover,html .link:hover,html .fixlink:hover{text-decoration-color:var(--ink);color:var(--ink)}
+html .link{font-family:var(--serif);font-size:17px}
+html .cap,html .kicker,html .tb-lab,html .gtag,html .etag,html .plabel,html .pk,html .vc-count,html .mt-count,html .cap2{font-family:var(--serif);font-weight:400;font-style:italic;letter-spacing:0;text-transform:none}
+html .muted,html .small-sans,html .note.small{font-family:var(--serif)}
+
+/* ---------- page: one reading column of about 680 px; annotated work reaches into the right margin when there is room ---------- */
+html .col{max-width:680px}
+html .prob,html .scard,html .exam{max-width:680px}
+html .bar{background:var(--bg);border-bottom:1px solid var(--line)}
+html .brand{font-family:var(--serif);font-style:italic;font-weight:400;font-size:17px;color:var(--muted)}
+html .toc{font-family:var(--serif);font-size:16px}
+html .modebtn,html .ink-tg{font-family:var(--serif);font-weight:400;font-size:15px;border-color:var(--line-strong)}
+html .hero{padding:72px 0 28px}
+html .kicker{font-size:17px;color:var(--muted);margin-bottom:22px}
+html .hero h1{font-family:var(--display);font-weight:400;font-size:clamp(52px,8.6vw,96px);line-height:.95;letter-spacing:-.012em;margin-bottom:22px}
+html .dek{font-style:italic;font-size:22px;line-height:1.4;color:var(--muted);max-width:28em}
+html .sec{padding-top:96px;margin-bottom:6px}
+html .sec-top{border-top:0;padding-top:0;gap:.45em}
+html .sec-n{font-family:var(--display);font-size:30px;line-height:1;color:var(--muted)}
+html .sec h2{font-size:clamp(32px,4.6vw,40px);line-height:1.1}
+html .lede{font-style:italic;font-size:19px}
+html .prose{margin-top:36px}
+html .prose h3{font-size:26px}
+html .ptext{font-size:20px;line-height:1.55}
+html .where p{font-size:20px;line-height:1.6}
+
+/* ---------- the board: worked math and live figures sit on it; nothing else gets a box ---------- */
+html .workbox,html .sbox.workbox{background:var(--panel);border:0;border-radius:8px;padding:16px 22px;color:var(--ink)}
+html .gv,html .pfig,html .gwrap,html .overview,html .partsfig{background:var(--panel);border:0;border-radius:8px;padding:16px;color:var(--ink)}
+html .gwrap > .gv{padding:0}
+html .gv svg text,html .pfig svg text,html .gwrap svg text,html .overview svg text,html .partsfig svg text{font-family:var(--serif);fill:var(--ink)}
+html .gv svg text.gv-lab:not(.n),html .pfig svg text:not(.n){font-style:italic}
+html .gv svg text.n,html .pfig svg text.n,html .gv svg text.num{font-family:var(--math);font-style:normal}
+html .gv svg text.num{fill:var(--muted)}
+html .gv svg text.gv-hand{font-family:var(--anno);font-style:normal;fill:var(--hand)}
+html .gv-read{font-family:var(--serif);font-size:18px}
+html .gv-cap,html .pfig figcaption{font-family:var(--serif);font-size:16px;color:var(--muted)}
+/* the step rail is the board for a worked example: a full-width band */
+html .steps{background:var(--panel);box-shadow:0 0 0 100vmax var(--panel);clip-path:inset(0 -100vmax);padding:40px 0 30px}
+html .ink-wrap{margin-top:44px}
+html .ink-wrap + *{margin-top:44px}
+html .ink-bar{max-width:680px}
+html .ink-host:not(.steps){background:var(--panel);box-shadow:0 0 0 100vmax var(--panel);clip-path:inset(0 -100vmax);padding:30px 0 34px}
+html .ink-host .disp{text-align:left;margin:0 0 14px}
+@media (min-width:1160px){html .col > .ink-wrap,html .scard > .ink-wrap,html .hero > .ink-wrap{width:calc(100% + min(360px, 50vw - 364px))}}
+html .hero .ink-host .disp{font-size:clamp(30px,4.8vw,46px)}
+
+/* ---------- the algebra system: in every display equation the inside group is one soft tile ---------- */
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title) .in:not(.mn,.mv,.mf,.mo,.ms){background:var(--inside-tint);border-radius:.22em;padding:.02em .18em .04em;box-shadow:inset 0 -.09em 0 var(--inside);margin:0 .03em;text-decoration:none;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title) .in :is(.mn,.mv,.mf,.mo){text-decoration:none}
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title) .in .in{background:none;box-shadow:none;padding:0;margin:0}
+/* older pages (the chain rule page) mark each atom of a group, not the group: tile the run of atoms as one piece */
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title,.hl-formula,.cline,.mbig,.frow,.rf) :is(.mn,.mv,.mf,.mo).in{background:var(--inside-tint);box-shadow:inset 0 -.09em 0 var(--inside);text-decoration:none;padding-top:.02em;padding-bottom:.04em}
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title,.hl-formula,.cline,.mbig,.frow,.rf) :is(.mn,.mv,.mf,.mo).in:not(.in + .in){border-radius:.22em 0 0 .22em;padding-left:.16em}
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title,.hl-formula,.cline,.mbig,.frow,.rf) :is(.mn,.mv,.mf,.mo).in:not(:has(+ .in)){border-top-right-radius:.22em;border-bottom-right-radius:.22em;padding-right:.16em}
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title,.hl-formula,.cline,.mbig,.frow,.rf) .ms.in{text-decoration:none}
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title,.st-m) .fr > .fd{padding-top:.2em}
+html :is(.disp,.sbox,.rule-eq,.know-eq,.defn-eq,.notn-sym,.emb-math,.pmath,.sol,.mline,.st-title,.st-m) .fr > .fn{padding-bottom:.12em}
+html .st-key .in{background:var(--inside-tint);border-radius:.22em;padding:.02em .18em .04em;box-shadow:inset 0 -.09em 0 var(--inside);text-decoration:none}
+html .st-key .in :is(.mn,.mv,.mf,.mo){text-decoration:none}
+html .st-title{font-size:26px}
+html .st-say{font-size:18px}
+html .st-m{font-size:30px}
+html .st-box{border-color:var(--ink)}
+html .disp{font-size:clamp(26px,4.6vw,34px);text-align:left}
+
+/* ---------- activities on paper: no cards, a hairline between them ---------- */
+html .prob,html .scard,html .exam{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:28px 0 4px;margin:48px auto 0}
+html .fb:empty{display:none}
+html .col > .scard:first-child,html .ink-wrap + .scard,html .sec + .col > :first-child > :is(.scard,.exam,.prob):first-child,html .sec + .col > :is(.scard,.exam,.prob):first-child{border-top:0;padding-top:0}
+html .ctitle{font-family:var(--serif);font-style:italic;font-weight:400;font-size:19px;color:var(--ink)}
+html .ctitle .mn,html .ctitle .mv,html .ctitle .mo,html .ctitle .pr{font-size:19px}
+html .is-locked{border-style:solid}
+html .lhs{font-size:22px}
+html .minput{background:var(--surface);border:1.5px solid var(--line-strong);border-radius:7px;min-height:52px;font-size:19px}
+html .minput:focus{border-color:var(--ink);box-shadow:0 0 0 3px var(--soft)}
+html .key{border-color:var(--line);background:var(--surface);border-radius:7px}
+html .btn{font-family:var(--serif);font-weight:700;font-size:17px;letter-spacing:.01em;background:var(--ink);border-color:var(--ink);color:var(--bg);border-radius:7px;min-height:52px;padding:0 22px}
+html .btn.sm{min-height:48px;padding:0 18px}
+html .btn:hover{opacity:1;background:var(--hand);border-color:var(--hand)}
+html .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+html .pv{font-family:var(--serif)}
+html .srow.ok .minput{border-color:var(--ok);border-width:2px}
+/* older worked-example rows (.srow with .snum) take the rail: numbered circles on a line, the math unboxed */
+html .srows:has(> .srow > .snum){position:relative}
+html .srows:has(> .srow > .snum)::before{content:"";position:absolute;left:14px;top:30px;bottom:30px;width:1.5px;background:var(--line)}
+html .srow{border-top:0}
+html .snum{position:relative;z-index:1;display:inline-grid;place-items:center;width:30px;height:30px;padding:0;margin-top:12px;border-radius:50%;border:1.5px solid var(--line-strong);background:var(--bg);font-family:var(--serif);font-weight:400;color:var(--muted)}
+html .slabel{font-family:var(--serif);font-size:18px}
+html .srows .sbox:not(.good):not(.bad):not(.given):not(.workbox){background:transparent;border-color:transparent;font-size:clamp(22px,3.2vw,28px);padding-left:4px}
+html .sbox.given{background:transparent;border-color:var(--line-strong)}
+
+/* ---------- feedback: a mark, a word, one line of help; "not yet" on a neutral ground ---------- */
+html .fb{position:relative;font-family:var(--serif);font-size:18px;line-height:1.5;color:var(--ink);font-weight:400;background:var(--hint-tint);border-radius:6px;padding:12px 16px;margin-top:14px}
+html .fb-ok,html .fb-no{padding-left:50px}
+html .fb-ok{background:var(--ok-tint)}
+html .fb-ok::before,html .fb-no::before{content:'';position:absolute;left:14px;top:12px;width:26px;height:26px;margin:0;border-radius:0;vertical-align:0;-webkit-mask:var(--fb-icon) center/contain no-repeat;mask:var(--fb-icon) center/contain no-repeat}
+html .fb-ok::before{background:var(--ok);--fb-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 1a11 11 0 1 1 0 22a11 11 0 0 1 0-22zm-5.9 11.3l1.8-1.8 2.4 2.4 5.8-6.1 1.8 1.8-7.6 7.9z'/%3E%3C/svg%3E")}
+html .fb-no::before{background:var(--bad);--fb-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10.2'/%3E%3Cpath d='M8.4 9.6a4.2 4.2 0 1 1 1.2 5.6M8.2 6.6v3.2h3.2'/%3E%3C/svg%3E")}
+html .fb-err::before,html .fb-stuck::before{content:none}
+html .fb .fb-w{font-weight:700}
+html .fb-ok .fb-w{color:var(--ok)}
+html .fb-no .fb-w{color:var(--bad)}
+html .fb .mn,html .fb .mv,html .fb .mf,html .fb .mo{font-size:20px}
+html .fb .fixlink{display:inline-block;margin-top:2px}
+html .hintd{font-family:var(--serif);font-size:18px;background:var(--hint-tint);border-radius:6px;padding:10px 16px;margin:10px 0 14px}
+html .hintd p{font-size:18px;margin:4px 0}
+html .hintd summary{color:var(--hint)}
+html .sol{background:var(--panel);border-radius:8px}
+html .repair{background:var(--panel);border-radius:8px}
+html .status{font-family:var(--serif)}
+html .st-bad{background:var(--hint-tint)}
+
+/* ---------- choices, matchers, tables, sliders, toggles ---------- */
+html .choice,html .mt-i{font-family:var(--serif);font-size:19px;border:1.5px solid var(--line-strong);border-radius:8px;background:var(--surface)}
+html .choice:hover,html .mt-i:hover{border-color:var(--ink)}
+html .choice.picked-ok,html .mt-i.done{border-color:var(--ok);background:var(--ok-tint)}
+html .choice.picked-no,html .chip.wrong{border-color:var(--bad);border-style:dashed}
+html .mt-i.sel{border-color:var(--ink);box-shadow:0 0 0 3px var(--soft)}
+html .mt-how,html .vc-idea,html .why,html .tb-read,html .ck,html .self legend,html .locked{font-family:var(--serif)}
+html .vc-item::before{border-color:var(--line-strong);font-family:var(--serif);font-weight:400}
+html .avt{background:transparent;border:0;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);border-radius:0;font-family:var(--serif)}
+html .avt caption{font-style:italic;font-weight:400;font-size:16px}
+html .avt thead th{font-weight:400;font-style:italic;font-size:15px}
+html .avt td.nv,html .tb td.nv{font-family:var(--math)}
+html .avt tr.near td{background:var(--panel)}
+html .tb th[scope="row"]{font-family:var(--serif);font-weight:400}
+html .sl-lab{font-family:var(--serif);font-weight:400;font-size:17px}
+html .sl-in{accent-color:var(--ink)}
+html .zb{font-family:var(--serif);font-weight:400;font-size:17px;border:1.5px solid var(--line-strong);border-radius:8px;background:var(--surface);min-height:46px;padding:0 18px}
+html .zb.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+html .shared-badge{font-family:var(--serif);font-weight:400;border-radius:6px}
+html .whyd{max-width:680px;background:transparent;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;padding:4px 0}
+html .whyd summary{font-family:var(--serif);font-weight:400;font-size:19px}
+html code{background:var(--panel)}
+html .backpill{font-family:var(--serif);background:var(--ink);color:var(--bg)}
+
+/* ---------- the teaching frame, calm: rules and the board instead of boxes; chrome never takes a role color ---------- */
+html .know{background:transparent;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;padding:26px 0 14px}
+html .know-name{text-align:left;font-size:30px}
+html .know-tag{justify-content:flex-start;margin:4px 0 4px}
+html .know-tag span{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;text-transform:none;font-size:16px;color:var(--muted);background:none;border:0;padding:0}
+html .know-list li::before{background:transparent;border:1.5px solid var(--line-strong);color:var(--muted);font-family:var(--serif);font-weight:400;line-height:29px}
+html .know-text{font-size:19px}
+html .know-eq,html .defn-eq,html .notn-sym,html .rule-eq{background:var(--panel);border-radius:8px}
+html .defn{background:transparent;border:0;border-left:3px solid var(--ink);border-radius:0;margin:44px 0}
+html .defn-head{background:transparent;border:0;padding:2px 0 6px 24px}
+html .defn-kind{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;text-transform:none;font-size:16px;color:var(--muted)}
+html .defn-term{font-weight:700;font-size:clamp(26px,4vw,30px)}
+html .defn-body{padding:6px 0 4px 24px}
+html .defn-words{font-size:20px}
+html .defn-not{background:var(--hint-tint);border-left:3px solid var(--line-strong);border-radius:0 6px 6px 0}
+html .defn-not .tb-lab{color:var(--muted)}
+html .notn{background:transparent;border:0;border-left:3px solid var(--line-strong);border-radius:0;padding:4px 0 6px 24px}
+html .notn-head{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;text-transform:none;font-size:16px}
+html .notn-piece,html .notn-part:nth-child(3n+2) .notn-piece,html .notn-part:nth-child(3n) .notn-piece{border:1.5px solid var(--line-strong);background:var(--surface);border-radius:6px}
+html .notn-ex{background:var(--panel);border-radius:8px}
+html .notn-ex-k{font-family:var(--serif);font-style:italic;font-weight:400}
+html .rule{background:var(--surface);border:1.5px solid var(--ink);border-radius:10px}
+html .rule-name{font-family:var(--display);font-weight:400}
+html .memo span{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0;text-transform:none;font-size:16px;color:var(--muted);background:none;border:0;padding:0}
+html .memo span::after{display:none}
+html .emblem{background:var(--panel);border:0;border-radius:8px}
+html .machine{background:var(--panel);border:0;border-radius:8px}
+html .hl,html .forms{background:transparent;border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0}
+html .hl-tab.cur{background:transparent}
+html .chip,html .chip-s{border-color:var(--line-strong);border-radius:8px;background:var(--surface)}
+html .pk,html .pku{font-family:var(--serif)}
+html .emb-legend,html .leg{font-family:var(--serif)}
+html .closer .rules{background:transparent}
+
+@media (max-width:640px){
+html body{font-size:18px}
+html .hero{padding:44px 0 16px}
+html .sec{padding-top:72px}
+html .sec h2{font-size:30px}
+html .ptext,html .where p{font-size:19px}
+html .st-m{font-size:27px}
+html .st-title{font-size:21px}
+html .steps{padding:28px 0 20px}
+html .defn-head,html .defn-body{padding-left:16px}
+html .notn{padding-left:16px}
+html .fb-ok,html .fb-no{padding-left:46px}
+html .fb-ok::before,html .fb-no::before{left:12px;width:24px;height:24px}
+html .btn{font-size:16px}
+}
 
 
 /* Colors and fonts come from the course theme (interactive/themes/<name>.css), injected by build.py. */
@@ -588,6 +787,78 @@ p.tb-lab{display:block}
 .notn-ex-row{grid-template-columns:minmax(0,1fr);gap:2px}
 }
 
+/* ---------- the algebra system, step rail and annotations (2026-10-25; ENGINE.md 3.14 and 3.15) ----------
+   Generic: every theme gets them. Tokens a theme may lack fall back: --panel to --surface, --hand to --ink,
+   --line-strong to --muted. The refined theme adds its typography and extends the tiles to every display equation. */
+.fb .fb-w{font-weight:inherit}
+.grp{color:inherit}
+.slot{display:inline-block;width:1.15em;height:.85em;vertical-align:-.08em;border:1.5px dashed var(--line-strong,var(--muted));border-radius:.18em;margin:0 .06em}
+/* in an equation (.eq) each inside group reads as one piece: a soft tile with a line under it, never nested */
+.eq .in{background:var(--inside-tint);border-radius:.22em;padding:.02em .18em .04em;box-shadow:inset 0 -.09em 0 var(--inside);margin:0 .03em;text-decoration:none;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.eq .in .mn,.eq .in .mv,.eq .in .mf,.eq .in .mo,.eq span.in{text-decoration:none}
+.eq .in .in{background:none;box-shadow:none;padding:0;margin:0}
+.eq .fr span.in{padding:0 .14em}
+.eq .fr > .fd{padding-top:.2em}
+.eq .fr > .fn{padding-bottom:.12em}
+/* Steps: a numbered rail; what each step does, then its math */
+.ink-wrap{margin:36px 0 0}
+.steps{position:relative;padding:28px 0 8px}
+.st-title{font-size:26px;line-height:1.4;margin:0 0 8px}
+.st-title .ml{font-size:1.1em}
+.st-key{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 28px;font-size:17px;color:var(--muted);margin:0 0 22px}
+.st-key .ml{font-size:20px;color:var(--ink)}
+.st-kp{white-space:nowrap}
+.st-rows{display:grid;grid-template-columns:30px minmax(0,12em) minmax(0,1fr);column-gap:24px;align-items:baseline}
+.st-r{display:contents}
+.st-no{position:relative;align-self:stretch;display:flex;justify-content:center;padding-top:22px}
+.st-no span{position:relative;z-index:1;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line-strong,var(--muted));background:var(--panel,var(--surface));font-family:var(--serif);font-size:16px;line-height:1;color:var(--muted)}
+.st-no::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1.5px;margin-left:-.75px;background:var(--line)}
+.st-r:first-child .st-no::before{top:37px}
+.st-r:last-child .st-no::before{bottom:auto;height:37px}
+.st-say{font-size:18px;line-height:1.45;padding-block:24px}
+.st-m{font-size:32px;line-height:1.3;padding-block:16px;min-width:0}
+.st-m .ml{white-space:normal}
+.st-box{display:inline-grid;border:1.5px solid var(--ink);border-radius:8px;padding:.06em .35em .12em;margin-left:-.2em}
+.st-note{grid-column:3;margin:-10px 0 14px}
+.st-r.st-hasnote .st-no{grid-row:span 2}
+/* annotations: the hand's notes, drawn over the host when the margin has room, else set under what they mark */
+.ink-bar{display:flex;justify-content:flex-end;margin:0 0 6px}
+.ink-tg{font-family:var(--serif);font-size:16px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line-strong,var(--muted));border-radius:999px;min-height:44px;padding:0 18px;cursor:pointer}
+.ink-tg[aria-pressed="false"]{color:var(--muted)}
+.ink-host{position:relative}
+.ink-layer{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.ink-pen{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ink-text{font-family:var(--anno);font-size:20px;font-weight:600}
+.ink-math{font-family:var(--math);font-style:italic;font-weight:400}
+.ink-note{display:block;font-family:var(--anno);font-size:19px;font-weight:600;line-height:1.3;color:var(--hand,var(--ink))}
+.ink-note .ml{font-weight:inherit}
+.ink-note.ink-inside{color:var(--inside)}.ink-note.ink-outside{color:var(--outside)}.ink-note.ink-rate{color:var(--rate)}
+.ink-notes{margin:14px 0 0;display:flex;flex-direction:column;gap:4px}
+.ink-drawn .ink-note{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ink-drawn .st-r.st-hasnote .st-no{grid-row:auto}
+.ink-off .ink-note,.ink-off .ink-layer{display:none}
+.ink-off .st-r.st-hasnote .st-no{grid-row:auto}
+.ink-anim .ink-pen{stroke-dasharray:1;stroke-dashoffset:1;animation:inkdraw .7s cubic-bezier(.5,.1,.3,1) forwards;animation-delay:var(--d,0s)}
+.ink-anim .ink-text{opacity:0;animation:inkappear .35s ease-out forwards;animation-delay:var(--d,0s)}
+@keyframes inkdraw{to{stroke-dashoffset:0}}
+@keyframes inkappear{to{opacity:1}}
+/* GraphView: leaders from a label to its point; the hand on a figure for its one insight */
+.gv svg .gv-leader{fill:none;stroke:var(--muted);stroke-width:1}
+.gv svg .gv-leader-dot{fill:var(--muted)}
+.gv svg text.gv-hand{font-family:var(--anno);font-size:18px;font-weight:600;fill:var(--hand,var(--ink))}
+@media (max-width:640px){
+.st-title{font-size:21px}
+.st-rows{grid-template-columns:1.6em minmax(0,1fr);column-gap:14px}
+.st-no{grid-column:1;padding-top:16px}
+.st-r .st-no{grid-row:span 2}
+.st-r.st-hasnote .st-no{grid-row:span 3}
+.st-r:first-child .st-no::before{top:31px}.st-r:last-child .st-no::before{height:31px}
+.st-say{grid-column:2;padding-block:14px 2px}
+.st-m{grid-column:2;font-size:26px;padding-block:2px 14px}
+.st-note{grid-column:2;margin:-6px 0 12px}
+.ink-off .st-r.st-hasnote .st-no{grid-row:span 2}
+}
+
 /* Sketching the Derivative (v4 supplement): page-only styles. Theme tokens only; tests/lint.js and the build refuse literal colors. */
 
 /* two panels stacked with one x scale (fig-meter, fig-sk): a small gap, so x lines up by eye */
@@ -620,7 +891,8 @@ p.tb-lab{display:block}
 .wrow-k { margin: 0 0 6px; font-family: var(--sans); font-weight: 700; }
 
 /* reading rules box */
-.rvrules { border: 2px solid var(--rate); border-radius: 12px; padding: 14px 20px 6px; margin: 8px 0 18px; background: var(--surface); }
+/* A refined: chrome never takes a role color; the rules box is set off by a neutral rule */
+.rvrules { border: 0; border-left: 3px solid var(--line-strong, var(--line)); padding: 6px 0 2px 22px; margin: 8px 0 18px; }
 .rvrules h3 { margin: 0 0 8px; font-family: var(--sans); font-size: 20px; }
 .rvrules ul { padding-left: 1.2em; margin: 0 0 10px; }
 .rvrules li { margin-bottom: 8px; }
@@ -633,7 +905,7 @@ p.tb-lab{display:block}
 .rvb:hover { border-color: var(--ink); }
 .rvb:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .rvb.picked-ok { border-color: var(--ok); background: var(--ok-tint); }
-.rvb.picked-no { border-color: var(--outside); border-style: dashed; }
+.rvb.picked-no { border-color: var(--bad); border-style: dashed; }
 .rvb:disabled { cursor: default; }
 .rvrow .fb { margin: 8px 0 0; }
 
@@ -1164,8 +1436,8 @@ if (typeof module !== 'undefined' && module.exports) {
 (function () {
 'use strict';
 var KEY = 'rize-calc1-sketching-the-derivative-v1';
-/* lesson-core.js: the shared engine for Calc I interactive lesson pages (plain HTML build), v2.
-   Owner: task F01 (interactive/shared/). Page agents never edit this file; see ENGINE.md.
+/* lesson-core.js: the shared engine for Rize interactive lesson pages, any course (plain HTML build), v2.
+   Owner: the lesson engine (~/Desktop/Mucking/lib/coursedev/lesson-engine). Page agents never edit this file; see ENGINE.md.
    History: extracted from the Unit 8 build 2026-10-08; Unit 2 added wrong-answer links, the light and dark
    toggle and number-aware figure labels 2026-10-09; v2 (2026-10-10) added the notation below, units,
    text answers, variables other than x, answers up to a constant, equations, lists, and the event layer.
@@ -1180,6 +1452,7 @@ var KEY = 'rize-calc1-sketching-the-derivative-v1';
      lim{x→2}  limit, lim{x→2^-} one-sided    I{a}{b} integral, I{}{} indefinite    S{i=1}{n} sum
      B{a}{b}  evaluation bar            dd{x}  differential dx      |..|  absolute value
      ≤ ≥ ≠ < > ≈ → ⇒ ±  relations       ∞ Δ θ  symbols; sin cos tan sec csc cot arcsin arccos arctan ln log exp
+     ⟪..⟫  a neutral group (no color)   ▢  an empty slot, dashed     @name at the start of any group names it for annotations
    Full table with rendered examples: ENGINE.md. */
 var mk = new MathKit();
 var NB = ' ', NN = ' ';
@@ -1202,6 +1475,8 @@ var GREEKU = { 'Δ': 'mn', 'δ': 'mv', 'θ': 'mv', 'α': 'mv', 'β': 'mv', 'λ':
 var DSTK = '<span class="mn dd">d</span>';
 /* limits under lim, Σ, ∫ and the bar are set without the wide spacing around = and → */
 function tight(h) { return h.replace(/<span class="mo eq"> ([^<]+?) <\/span>/g, '<span class="mo eq">$1</span>').replace(/<span class="mo"> ([^<]+?) <\/span>/g, '<span class="mo">$1</span>'); }
+/* a group may start with @name (then a space): it becomes data-a="name", the handle annotations point at (ENGINE.md 3.14) */
+function gtag(inner) { var m = /^@([A-Za-z][\w-]*) ?/.exec(inner); return m ? [' data-a="' + m[1] + '"', inner.slice(m[0].length)] : ['', inner]; }
 function mth(s) {
   var i = 0, out = '', prev = '', sp = false;
   function grab(open, close) {
@@ -1255,9 +1530,11 @@ function mth(s) {
       out += '<span class="evb"><span class="evb-t">' + tight(mth(bb)) + '</span><span class="evb-b">' + tight(mth(ba)) + '</span></span>'; prev = 'opd'; sp = false;
       continue;
     }
-    if (c === '{') { var gi = grab('{', '}'); opd('<span class="in">' + mth(gi) + '</span>'); continue; }
-    if (c === '«') { var go = grab('«', '»'); opd('<span class="out">' + mth(go) + '</span>'); continue; }
-    if (c === '‹') { var k = grab('‹', '›'); opd('<span class="k">' + mth(k) + '</span>'); continue; }
+    if (c === '{') { var gi = gtag(grab('{', '}')); opd('<span class="in"' + gi[0] + '>' + mth(gi[1]) + '</span>'); continue; }
+    if (c === '«') { var go = gtag(grab('«', '»')); opd('<span class="out"' + go[0] + '>' + mth(go[1]) + '</span>'); continue; }
+    if (c === '‹') { var k = gtag(grab('‹', '›')); opd('<span class="k"' + k[0] + '>' + mth(k[1]) + '</span>'); continue; }
+    if (c === '⟪') { var gn = gtag(grab('⟪', '⟫')); opd('<span class="grp"' + gn[0] + '>' + mth(gn[1]) + '</span>'); continue; }
+    if (c === '▢') { opd('<span class="slot"></span>'); i++; continue; }
     if (c === '"') { var j2 = s.indexOf('"', i + 1); var w = s.slice(i + 1, j2); i = j2 + 1; if (sp) out += NB; sp = false; out += '<span class="pr">' + esc(w) + '</span>'; if (s[i] === ' ') { out += NB; i++; } prev = 'op'; continue; }
     if (c === '^') { i++; script('sup', 'ms'); continue; }
     if (c === '_') { i++; script('sub', 'msb'); continue; }
@@ -1271,7 +1548,7 @@ function mth(s) {
     if (/[A-Za-z]/.test(c)) {
       if (s.startsWith('lim{', i)) { i += 3; var ls = grab('{', '}'); fnlike('<span class="lim"><span class="mf lim-w">lim</span><span class="lim-s">' + tight(mth(ls)) + '</span></span>'); continue; }
       if (s.startsWith('dd{', i)) { i += 2; var dx = grab('{', '}'); opd('<span class="dif"><span class="mn dd">d</span>' + mth(dx) + '</span>'); continue; }
-      if (s.startsWith('rate{', i)) { i += 4; var rg = grab('{', '}'); opd('<span class="rt">' + mth(rg) + '</span>'); continue; }
+      if (s.startsWith('rate{', i)) { i += 4; var rg = gtag(grab('{', '}')); opd('<span class="rt"' + rg[0] + '>' + mth(rg[1]) + '</span>'); continue; }
       if (s.startsWith('sqrt', i)) { i += 4; opd('<span class="mn">√</span>'); prev = 'op'; continue; }
       if (s.startsWith('pi', i)) { i += 2; opd('<span class="mn">π</span>'); continue; }
       var fnw = FNW.find(function (f) { return s.startsWith(f, i); });
@@ -1555,15 +1832,22 @@ function hintsHTML(id) {
   return '<div class="hintd">' + item.hints.slice(0, nh).map(function (t, n) { return '<p><b>Hint' + (item.hints.length > 1 ? ' ' + (n + 1) : '') + '.</b> ' + P(t) + '</p>'; }).join('') + '</div>';
 }
 var CLOSE_MSG = 'Close. Check your arithmetic, and keep every decimal place the question uses.';
+/* feedback is a mark, a word, then one line of help: the word sits in span.fb-w ("Correct.", "Not yet."), which a theme can
+   style; a message that already opens with "Not yet." or "Not a match." keeps its own word */
+function fbWord(html, word) {
+  var m = /^\s*(Not yet\.|Not a match\.|Correct\.)\s*/.exec(html);
+  if (m) return '<span class="fb-w">' + m[1] + '</span>' + (html.length > m[0].length ? ' ' + html.slice(m[0].length) : '');
+  return '<span class="fb-w">' + word + '</span>' + (html ? ' ' + html : '');
+}
 function fbHTML(id) {
   var item = ITEMS[id], r = S.res[id];
   if (!r) return '';
-  if (r.st === 'ok') return '<p class="fb fb-ok">' + (r.approx ? 'Correct. Exactly, it is ' + M(String(item.ans).replace(/^-/, '−')) + '.' : 'Correct.') + (item.okNote ? ' ' + P(item.okNote) : '') + (r.unitNote ? ' ' + esc(r.unitNote) : '') + '</p>';
+  if (r.st === 'ok') return '<p class="fb fb-ok">' + fbWord((r.approx ? 'Exactly, it is ' + M(String(item.ans).replace(/^-/, '−')) + '.' : '') + (item.okNote ? (r.approx ? ' ' : '') + P(item.okNote) : '') + (r.unitNote ? ' ' + esc(r.unitNote) : ''), 'Correct.') + '</p>';
   if (r.st === 'err') return '<p class="fb fb-err">' + (r.md ? P(r.msg) : esc(r.msg)) + '</p>';
   if (r.st === 'stuck') return '<p class="fb fb-stuck">' + (item.hints && item.hints.length ? 'Here is a place to start.' : 'Try the first step, then check again.') + '</p>';
   if (r.st === 'close') return '<p class="fb fb-stuck">' + P(item.closeMsg || CLOSE_MSG) + '</p>';
-  if (r.st === 'slip') return '<p class="fb fb-no">' + P(r.msg) + goHTML(r.go || item.teach, id) + '</p>';
-  return '<p class="fb fb-no">' + (r.msg ? esc(r.msg) : 'Not yet.') + (item.hints && item.hints.length ? ' The hint below shows the next step.' : '') + ((S.tries[id] || 0) >= 2 ? goHTML(item.teach, id) : '') + '</p>';
+  if (r.st === 'slip') return '<p class="fb fb-no">' + fbWord(P(r.msg), 'Not yet.') + goHTML(r.go || item.teach, id) + '</p>';
+  return '<p class="fb fb-no">' + fbWord((r.msg ? esc(r.msg) : '') + (item.hints && item.hints.length ? (r.msg ? ' ' : '') + 'The hint below shows the next step.' : ''), 'Not yet.') + ((S.tries[id] || 0) >= 2 ? goHTML(item.teach, id) : '') + '</p>';
 }
 function repairHTML(id, tag) {
   var rid = 'rep-' + id + '-' + tag;
@@ -1601,8 +1885,8 @@ function mcHTML(id, opts, ok, blkName) {
   MCS[id] = { opts: opts, ok: ok, blk: blkName };
   var p = S.pick[id], good = p === ok, wl = S.wrong[id] || [];
   var h = '<div class="mcrow" id="mc-' + id + '">' + order(id, opts.length).map(function (k) { var cls = good && k === ok ? ' picked-ok' : wl.indexOf(k) >= 0 ? ' picked-no' : ''; return '<button type="button" class="choice' + cls + '" data-act="mc" data-id="' + id + '" data-k="' + k + '"' + (good ? ' disabled' : '') + '>' + P(opts[k][0]) + '</button>'; }).join('') + '</div>';
-  if (good) h += '<p class="fb fb-ok">Correct.' + (opts[ok][1] ? ' ' + P(String(opts[ok][1]).replace(/^\s*Correct\.\s*/, '')) : '') + '</p>';
-  else if (p !== undefined) h += '<p class="fb fb-no">' + P(opts[p][1]) + goHTML(opts[p][2], id) + '</p>';
+  if (good) h += '<p class="fb fb-ok">' + fbWord(opts[ok][1] ? P(String(opts[ok][1]).replace(/^\s*Correct\.\s*/, '')) : '', 'Correct.') + '</p>';
+  else if (p !== undefined) h += '<p class="fb fb-no">' + fbWord(P(opts[p][1]), 'Not yet.') + goHTML(opts[p][2], id) + '</p>';
   return h;
 }
 
@@ -1634,7 +1918,7 @@ function pillCheck() {
   else goTo.side = side;
 }
 
-/* ---------------- light and dark: dark by default, the student's choice remembered across Calc I pages ---------------- */
+/* ---------------- light and dark: dark by default, the student's choice remembered across a course's pages ---------------- */
 var MODE_KEY = 'rize-calc1-mode';
 function modeBtnHTML() { var de = document.documentElement, light = !!(de && de.getAttribute('data-theme') === 'light'); return '<button type="button" class="modebtn" data-act="mode" aria-pressed="' + light + '">' + (light ? 'Dark mode' : 'Light mode') + '</button>'; }
 document.addEventListener('click', function (e) {
@@ -1700,7 +1984,7 @@ function mount(html, opts) {
   return app;
 }
 
-/* components.js: shared components for Calc I lesson pages (v2, 2026-10-10). Owner: task F01.
+/* components.js: shared components for Rize lesson pages, any course (v2, 2026-10-10; step rail and annotations 2026-10-25).
    Every component is a function that RETURNS AN HTML STRING built from the current state S; none touches the
    DOM while rendering. Interactive components keep their state in S (saved to localStorage) and re-render
    their own block. Colors come only from theme tokens. API and snippets: ENGINE.md, section 3. */
@@ -1987,8 +2271,8 @@ function matcher(id, o) {
   h += '<p class="mt-how">' + P(o.how || 'Pick an item on the left, then its match on the right.') + '</p><div class="mt-cols"><div class="mt-col">' + o.left.map(function (x) { return btn('l', x); }).join('') + '</div><div class="mt-col">' +
     order2.map(function (k) { return btn('r', o.right[k]); }).join('') + '</div></div>';
   h += '<p class="mt-count" aria-live="polite">' + nDone + ' of ' + o.left.length + ' matched</p>';
-  if (mtDone(id)) h += '<p class="fb fb-ok">Correct.' + (o.done ? ' ' + P(o.done) : '') + '</p>';
-  else if (st.last) { var w = mtWrong(o, st.last[0], st.last[1]); h += '<p class="fb fb-no">' + P(w[0]) + goHTML(w[1], id) + '</p>'; }
+  if (mtDone(id)) h += '<p class="fb fb-ok">' + fbWord(o.done ? P(o.done) : '', 'Correct.') + '</p>';
+  else if (st.last) { var w = mtWrong(o, st.last[0], st.last[1]); h += '<p class="fb fb-no">' + fbWord(P(w[0]), 'Not a match.') + goHTML(w[1], id) + '</p>'; }
   return h + '</div>';
 }
 function mtWrong(o, l, r) { var w = (o.wrongs && o.wrongs[l]) || {}; return w[r] || w['*'] || o.wrong || ['Not a match. Look at each one again.', null]; }
@@ -2130,7 +2414,7 @@ function gvInner(id) {
   (o.vlines || []).forEach(function (vl) { curves += '<line x1="' + X(vl.x) + '" y1="' + T0 + '" x2="' + X(vl.x) + '" y2="' + B0 + '" style="stroke:' + roleColor(vl.role || 'muted') + ';stroke-width:' + (vl.width || 1.5) + (vl.dash === false ? '' : ';stroke-dasharray:' + (vl.dash || '5 5')) + '"/>'; });
   (o.hlines || []).forEach(function (hl) { curves += '<line x1="' + L0 + '" y1="' + Y(hl.y) + '" x2="' + R0 + '" y2="' + Y(hl.y) + '" style="stroke:' + roleColor(hl.role || 'muted') + ';stroke-width:' + (hl.width || 1.5) + (hl.dash === false ? '' : ';stroke-dasharray:' + (hl.dash || '5 5')) + '"/>'; });
   g += o.clip === false ? '<g>' + curves + '</g>' : '<g clip-path="url(#' + cid + ')">' + curves + '</g>';
-  (o.segs || []).forEach(function (s2) { g += '<line x1="' + X(s2.from[0]) + '" y1="' + Y(s2.from[1]) + '" x2="' + X(s2.to[0]) + '" y2="' + Y(s2.to[1]) + '" style="stroke:' + roleColor(s2.role) + ';stroke-width:' + (s2.width || 3) + (s2.dash ? ';stroke-dasharray:' + (s2.dash === true ? '7 5' : s2.dash) : '') + '"/>'; marks.push([[X(s2.from[0]), Y(s2.from[1])], [X(s2.to[0]), Y(s2.to[1])], [(X(s2.from[0]) + X(s2.to[0])) / 2, (Y(s2.from[1]) + Y(s2.to[1])) / 2]]); });
+  (o.segs || []).forEach(function (s2) { if (s2.label) (marks.lbl = marks.lbl || []).push({ x: (X(s2.from[0]) + X(s2.to[0])) / 2, y: (Y(s2.from[1]) + Y(s2.to[1])) / 2, text: s2.label, role: s2.role, at: s2.at, gap: 8 }); g += '<line x1="' + X(s2.from[0]) + '" y1="' + Y(s2.from[1]) + '" x2="' + X(s2.to[0]) + '" y2="' + Y(s2.to[1]) + '" style="stroke:' + roleColor(s2.role) + ';stroke-width:' + (s2.width || 3) + (s2.dash ? ';stroke-dasharray:' + (s2.dash === true ? '7 5' : s2.dash) : '') + '"/>'; marks.push([[X(s2.from[0]), Y(s2.from[1])], [X(s2.to[0]), Y(s2.to[1])], [(X(s2.from[0]) + X(s2.to[0])) / 2, (Y(s2.from[1]) + Y(s2.to[1])) / 2]]); });
   /* dots: { x, y, open, role, r, label, at } */
   var labels = (marks.lbl || []).slice();
   (o.dots || o.points || []).forEach(function (p) {
@@ -2151,7 +2435,8 @@ function gvInner(id) {
       '<circle cx="' + dpx + '" cy="' + (isFinite(dpy) ? dpy : B0) + '" r="20" style="fill:transparent"/><circle class="gv-dot" cx="' + dpx + '" cy="' + (isFinite(dpy) ? dpy : B0) + '" r="7.5" style="fill:var(--ink);stroke:var(--bg);stroke-width:2.5"/></g>';
     readout = o.drag.readout ? o.drag.readout(dxv, dyv) : P('`{' + (o.drag.xName || 'x') + ' = ' + fmtNum(dxv, dp) + '}`, ' + (isFinite(dyv) ? '`«' + (o.drag.yName || 'f(x)') + ' = ' + fmtNum(dyv, dp) + '»`' : 'and `«' + (o.drag.yName || 'f(x)') + '»` has no value here'));
   }
-  (o.texts || []).forEach(function (t) { labels.push({ x: X(t.x), y: Y(t.y), text: t.text, role: t.role, at: t.at, gap: 2 }); });
+  /* texts: { x, y, text, role, at, to: [x, y] (a thin leader to that point), hand: true (the teacher's hand, for a figure's one insight) } */
+  (o.texts || []).forEach(function (t) { labels.push({ x: X(t.x), y: Y(t.y), text: t.text, role: t.role, at: t.at || (t.to ? 'e' : undefined), gap: 2, to: t.to ? [X(t.to[0]), Y(t.to[1])] : null, hand: t.hand }); });
   /* labels: placed at the first of eight spots around their anchor that clears every curve, segment and dot */
   labels.forEach(function (lab) {
     var s = String(lab.text), fsz = 15, w = s.length * fsz * 0.56, h = fsz, gap = lab.gap || 6;
@@ -2164,7 +2449,12 @@ function gvInner(id) {
       if (!hit || lab.at) best = [tx, ty, sp[2]];
     }
     if (!best) { var d0 = spots.nw; best = [lab.x + d0[0], lab.y + d0[1], d0[2]]; }
-    g += '<text x="' + best[0].toFixed(1) + '" y="' + best[1].toFixed(1) + '" class="gv-lab' + (/^[\s\d.,−\-+=()]*$/.test(s) ? ' n' : '') + '" text-anchor="' + best[2] + '"' + (lab.role ? ' style="fill:' + roleColor(lab.role) + '"' : '') + '>' + svgMath(s) + '</text>';
+    if (lab.to) { /* a leader: from the label's nearest edge to the point, ending in a small dot */
+      var lw = w, lx0 = best[2] === 'start' ? best[0] : best[2] === 'end' ? best[0] - lw : best[0] - lw / 2, ly0 = best[1] - h * 0.85;
+      var ex = Math.max(lx0 - 3, Math.min(lx0 + lw + 3, lab.to[0])), ey = Math.max(ly0 - 3, Math.min(ly0 + h + 3, lab.to[1]));
+      if (Math.hypot(lab.to[0] - ex, lab.to[1] - ey) > 6) g += '<path class="gv-leader" d="M' + ex.toFixed(1) + ' ' + ey.toFixed(1) + ' L' + lab.to[0].toFixed(1) + ' ' + lab.to[1].toFixed(1) + '"/><circle class="gv-leader-dot" cx="' + lab.to[0].toFixed(1) + '" cy="' + lab.to[1].toFixed(1) + '" r="2"/>';
+    }
+    g += '<text x="' + best[0].toFixed(1) + '" y="' + best[1].toFixed(1) + '" class="gv-lab' + (/^[\s\d.,−\-+=()]*$/.test(s) ? ' n' : '') + (lab.hand ? ' gv-hand' : '') + '" text-anchor="' + best[2] + '"' + (lab.role ? ' style="fill:' + roleColor(lab.role) + '"' : '') + '>' + svgMath(s) + '</text>';
   });
   g += dragH + '</svg>';
   var top = '';
@@ -2209,8 +2499,163 @@ window.addEventListener('pointermove', function (e) {
 });
 window.addEventListener('pointerup', function () { if (GVDRAG) { GVDRAG = null; save(); } });
 
+/* ---------------- 13. The algebra system: Steps (the step rail) (2026-10-25, the A refined house design) ----------------
+   steps(id, { title, key: [[math, words], ...], rows: [{ say, math, result }], notes: [...] }): a worked example, one
+   numbered row per step on a rail: what the step does (say, prose markup), then its math (math markup, no backticks).
+   The author marks roles in the math ({inside} «outside» ‹value› rate{..}); in equations each role group reads as one
+   piece (in the refined theme, a soft tile for the inside). result: true boxes that row's math (the answer). The rows
+   must read clearly with no annotations at all; notes (section 14) are an optional layer, at most two. */
+function stepsNoteRow(o, note) {
+  if (note.row) return note.row - 1;
+  var want = typeof note.to === 'number' ? note.to - 1 : -1, name = typeof note.to === 'string' ? note.to : null;
+  (o.rows || []).forEach(function (r, n) { if (name && new RegExp('@' + name + '(?![\\w-])').test(r.math)) want = n; });
+  return want;
+}
+function steps(id, o) {
+  var rows = o.rows || [], notes = o.notes || [], h = '';
+  if (o.title) h += '<p class="st-title">' + P(o.title) + '</p>';
+  if (o.key && o.key.length) h += '<p class="st-key">' + o.key.map(function (k) { return '<span class="st-kp"><span class="ml">' + mth(k[0]) + '</span> ' + P(k[1]) + '</span>'; }).join('') + '</p>';
+  h += '<div class="st-rows" role="list">' + rows.map(function (r, n) {
+    var under = notes.filter(function (x) { return x.fallback !== false && stepsNoteRow(o, x) === n; }).map(function (x) { return '<span class="st-note ink-note' + (x.role ? ' ink-' + x.role : '') + '">' + P(x.lead ? x.lead + ' ' + x.text : x.text) + '</span>'; }).join('');
+    return '<div class="st-r' + (r.result ? ' st-res' : '') + (under ? ' st-hasnote' : '') + '" role="listitem"><span class="st-no" aria-hidden="true"><span>' + (n + 1) + '</span></span>' +
+      '<span class="st-say"><span class="vh">Step ' + (n + 1) + ': </span>' + P(r.say || '') + '</span>' +
+      '<span class="st-m eq">' + (r.result ? '<span class="st-box">' + M(r.math) + '</span>' : M(r.math)) + '</span>' + under + '</div>';
+  }).join('') + '</div>';
+  return annotate(id, h, notes, { cls: 'steps', inline: true });
+}
+
+/* ---------------- 14. Annotations: the teacher's hand, an optional layer (2026-10-25) ----------------
+   annotate(id, html, notes, { animate }) wraps html (math that names its pieces with @name, ENGINE.md 1.1) in a host
+   that draws hand-written notes over it, positioned from the real terms after every render, resize and font load.
+   A note: { to: name, text, role?, kind?, from?, lead? }. kinds: 'arrow' (default: a margin note with an arrow to the
+   term), 'travel' (a curve from one term to another: from, to), 'bracket' (a bracket spanning from..to, e.g. two rows),
+   'circle' (a loop around the term, with its note in the margin). In steps(), from and to may also be row numbers.
+   At most two notes per host, each at most eight words: the hand points at one thing in a few words. Where there is no
+   room in the margin (phones, narrow columns), each note is set as a line of handwriting under what it marks (lead
+   adds words in front, so the line reads on its own: lead '`«"distance fallen"»` is'; fallback: false drops a note that
+   only makes sense beside its drawing, such as a bracket). The reader can switch the
+   layer off ("Annotations: on/off", remembered); the page must read clearly with it off. */
+var INKS = {};
+function annotate(id, html, notes, opts) {
+  opts = opts || {}; notes = notes || [];
+  if (notes.length > 2) throw new Error('annotate ' + id + ': at most two notes per block (got ' + notes.length + '); the hand points at one or two things, never a tour');
+  notes.forEach(function (n) {
+    var words = String(n.text || '').replace(/`[^`]*`/g, 'x').trim().split(/\s+/).filter(Boolean).length;
+    if (!n.text || !n.to) throw new Error('annotate ' + id + ': every note needs to (the mark it points at) and text');
+    if (words > 8) throw new Error('annotate ' + id + ': "' + n.text + '" has ' + words + ' words; a note is at most eight');
+  });
+  INKS[id] = { notes: notes, animate: !!opts.animate, drawn: false };
+  var off = S.tab['ink-' + id] === 'off';
+  var bar = notes.length ? '<div class="ink-bar"><button type="button" class="ink-tg" data-act="ink" data-id="' + id + '" aria-pressed="' + !off + '">Annotations: ' + (off ? 'off' : 'on') + '</button></div>' : '';
+  var list = !opts.inline && notes.some(function (n) { return n.fallback !== false; }) ? '<p class="ink-notes">' + notes.filter(function (n) { return n.fallback !== false; }).map(function (n) { return '<span class="ink-note' + (n.role ? ' ink-' + n.role : '') + '">' + P(n.lead ? n.lead + ' ' + n.text : n.text) + '</span>'; }).join('') + '</p>' : '';
+  return '<div class="ink-wrap' + (opts.cls ? ' ' + opts.cls + '-wrap' : '') + '">' + bar + '<div class="ink-host' + (opts.cls ? ' ' + opts.cls : '') + (off ? ' ink-off' : '') + '" id="' + id + '">' + html + list + '</div></div>';
+}
+onAct('ink', function (b) {
+  var id = b.dataset.id, off = S.tab['ink-' + id] !== 'off';
+  S.tab['ink-' + id] = off ? 'off' : 'on'; save();
+  var host = document.getElementById(id); if (host) host.classList.toggle('ink-off', off);
+  b.setAttribute('aria-pressed', String(!off)); b.textContent = 'Annotations: ' + (off ? 'off' : 'on');
+  inkDraw(id);
+});
+/* drawing (browser only; pure geometry from the rendered terms, never stored) */
+function inkRng(seed) { var x = seed >>> 0 || 1; return function () { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; return x / 4294967296; }; }
+function inkSmooth(pts) {
+  var d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+  for (var k = 0; k < pts.length - 1; k++) { var p0 = pts[k - 1] || pts[k], p1 = pts[k], p2 = pts[k + 1], p3 = pts[k + 2] || p2;
+    d += ' C' + (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1) + ' ' + (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1) + ' ' + (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1) + ' ' + (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1) + ' ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1); }
+  return d;
+}
+function inkHead(tip, from) { var tx = tip[0] - from[0], ty = tip[1] - from[1], tl = Math.hypot(tx, ty) || 1, h = 11, a = 0.5; tx /= tl; ty /= tl;
+  var p = function (s) { return [tip[0] - h * (tx * Math.cos(s) - ty * Math.sin(s)), tip[1] - h * (ty * Math.cos(s) + tx * Math.sin(s))]; }, h1 = p(a), h2 = p(-a);
+  return 'M' + h1[0].toFixed(1) + ' ' + h1[1].toFixed(1) + ' L' + tip[0].toFixed(1) + ' ' + tip[1].toFixed(1) + ' L' + h2[0].toFixed(1) + ' ' + h2[1].toFixed(1); }
+function inkArrow(p0, p1, bend, seed) {
+  var R = inkRng(seed), dx = p1[0] - p0[0], dy = p1[1] - p0[1], L = Math.hypot(dx, dy) || 1, c = [(p0[0] + p1[0]) / 2 - dy / L * bend * L, (p0[1] + p1[1]) / 2 + dx / L * bend * L], pts = [];
+  for (var k = 0; k <= 14; k++) { var t = k / 14, u = 1 - t; pts.push([u * u * p0[0] + 2 * u * t * c[0] + t * t * p1[0] + (k && k < 14 ? (R() - 0.5) * 0.8 : 0), u * u * p0[1] + 2 * u * t * c[1] + t * t * p1[1] + (k && k < 14 ? (R() - 0.5) * 0.8 : 0)]); }
+  return [inkSmooth(pts), inkHead(p1, c)];
+}
+function inkLoop(r, seed) { var R = inkRng(seed), cx = r.x + r.w / 2, cy = r.y + r.h / 2, rx = r.w / 2 + 10, ry = r.h / 2 + 8, a0 = -2.2 + R() * 0.4, pts = [];
+  for (var k = 0; k <= 28; k++) { var t = k / 28, a = a0 + (Math.PI * 2 + 0.55) * t, g = 1 + 0.05 * Math.sin(3 * a + R() * 0.3) + 0.07 * t; pts.push([cx + Math.cos(a) * rx * g, cy + Math.sin(a) * ry * g * (1 - 0.04 * t)]); }
+  return inkSmooth(pts); }
+function inkBracket(x, y0, y1) { var m = (y0 + y1) / 2; return 'M' + (x - 7) + ' ' + y0 + ' Q' + x + ' ' + y0 + ' ' + x + ' ' + (y0 + 9) + ' L' + x + ' ' + (m - 7) + ' Q' + x + ' ' + m + ' ' + (x + 8) + ' ' + m + ' Q' + x + ' ' + m + ' ' + x + ' ' + (m + 7) + ' L' + x + ' ' + (y1 - 9) + ' Q' + x + ' ' + y1 + ' ' + (x - 7) + ' ' + y1; }
+function inkAll() { Object.keys(INKS).forEach(inkDraw); }
+function inkDraw(id) {
+  var host = typeof document !== 'undefined' && document.getElementById(id), ink = INKS[id];
+  if (!host || !ink || !host.getBoundingClientRect || !host.querySelector) return;
+  var NS = 'http://www.w3.org/2000/svg', svg = host.querySelector(':scope > svg.ink-layer');
+  if (!svg) { svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'ink-layer'); svg.setAttribute('aria-hidden', 'true'); host.appendChild(svg); }
+  svg.innerHTML = ''; host.classList.remove('ink-drawn');
+  var hb = host.getBoundingClientRect();
+  if (!ink.notes.length || host.classList.contains('ink-off') || hb.width < 560) return;
+  svg.setAttribute('width', host.scrollWidth); svg.setAttribute('height', host.scrollHeight);
+  var rel = function (el) { var r = el.getBoundingClientRect(); return { x: r.left - hb.left, y: r.top - hb.top, w: r.width, h: r.height, r: r.right - hb.left, b: r.bottom - hb.top }; };
+  var rows = host.querySelectorAll('.st-m');
+  var mark = function (a) { var el = typeof a === 'number' ? rows[a - 1] && (rows[a - 1].querySelector('.ml') || rows[a - 1]) : host.querySelector('[data-a="' + a + '"]'); return el ? rel(el) : null; };
+  /* the right edge of the math beside a stretch of the host (y0 to y1), so a note clears what it sits next to */
+  var maths = []; Array.prototype.forEach.call(host.querySelectorAll('.ml'), function (e) { if (!e.closest('.ink-notes,.st-note,.st-say,.st-key,.st-title')) maths.push(rel(e)); });
+  var rightOf = function (y0, y1) { var r = 0; maths.forEach(function (m) { if (m.b > y0 + 2 && m.y < y1 - 2) r = Math.max(r, m.r); }); return r; };
+  var arrows = ink.notes.filter(function (n) { return !n.kind || n.kind === 'arrow' || n.kind === 'circle'; }).map(function (n) { return mark(n.to); }).filter(Boolean);
+  var col = arrows.length ? rightOf(Math.min.apply(null, arrows.map(function (m) { return m.y; })), Math.max.apply(null, arrows.map(function (m) { return m.b; }))) + 56 : 0;
+  var parts = [], fits = true, used = [];
+  var anim = ink.animate && !ink.drawn && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function pen(d, color, w, delay) { parts.push(function () { var p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); p.setAttribute('pathLength', '1'); p.setAttribute('class', 'ink-pen'); p.style.stroke = 'var(--' + color + ')'; p.style.strokeWidth = (w || 2.2) + 'px'; if (anim) p.style.setProperty('--d', delay + 's'); svg.appendChild(p); }); }
+  /* a note's words: one line if it fits beside the work, else two balanced lines, else no room (the inline fallback) */
+  function textEl(x, y, lines, color, delay) {
+    var t = document.createElementNS(NS, 'text'); t.setAttribute('x', x); t.setAttribute('y', y); t.setAttribute('class', 'ink-text'); t.style.fill = 'var(--' + color + ')'; if (anim) t.style.setProperty('--d', delay + 's');
+    lines.forEach(function (ln, i) {
+      var row = document.createElementNS(NS, 'tspan'); row.setAttribute('x', x); if (i) row.setAttribute('dy', '1.2em');
+      String(ln).split('`').forEach(function (seg, k) { if (!seg) return; var s2 = document.createElementNS(NS, 'tspan'); if (k % 2) { s2.setAttribute('class', 'ink-math'); seg = seg.replace(/[{}«»‹›⟪⟫"]|@[\w-]+ ?/g, ''); } s2.textContent = seg; row.appendChild(s2); });
+      t.appendChild(row);
+    });
+    return t;
+  }
+  function widest(t) { svg.appendChild(t); var w = 0; Array.prototype.forEach.call(t.childNodes, function (r) { w = Math.max(w, r.getComputedTextLength ? r.getComputedTextLength() : 0); }); svg.removeChild(t); return w; }
+  function word(x, y, text, color, delay) {
+    var t = textEl(x, y, [text], color, delay), limit = hb.width - 2;
+    if (x + widest(t) > limit) {
+      var ws = String(text).split(' '), best = null;
+      for (var j = 1; j < ws.length; j++) { var a = ws.slice(0, j).join(' '), b = ws.slice(j).join(' '); if ((a.split('`').length % 2) && (b.split('`').length % 2)) { var c = textEl(x, y - 12, [a, b], color, delay), cw = widest(c); if (!best || cw < best[1]) best = [c, cw]; } }
+      if (best && x + best[1] <= limit) t = best[0]; else { fits = false; return; }
+    }
+    parts.push(function () { svg.appendChild(t); });
+  }
+  ink.notes.forEach(function (n, k) {
+    var color = n.role ? n.role : 'hand', kind = n.kind || 'arrow', t = mark(n.to), f = n.from !== undefined ? mark(n.from) : null, delay = 0.25 + k * 0.75;
+    if (!t || (n.from !== undefined && !f)) { fits = false; return; }
+    if (kind === 'travel') {
+      /* the curve leaves from's right edge and comes down into to from above: it must clear every row from from to just above to */
+      var side = Math.max(rightOf(f.y, t.y - 4), f.r) + 40, p0 = [Math.max(f.r, rightOf(f.y + f.h * 0.3, f.b - f.h * 0.3)) + 10, f.y + f.h * 0.55], p1 = [t.x + t.w * 0.6, t.y + 2], R = inkRng(21 + k);
+      var pts = [p0, [side, f.b + 10], [side + 8, (f.b + t.y) / 2], [side - 10, t.y - 26], [p1[0] + 30, p1[1] - 22], [p1[0] + 6, p1[1] - 14]].map(function (p, j) { return j ? [p[0] + (R() - 0.5) * 2, p[1] + (R() - 0.5) * 2] : p; });
+      pen(inkSmooth(pts.concat([p1])), color, 2.4, delay); pen(inkHead(p1, [p1[0] + 6, p1[1] - 14]), color, 2.4, delay + 0.5);
+      word(side + 18, (f.b + t.y) / 2 + 6, n.text, color, delay + 0.3);
+    } else if (kind === 'bracket') {
+      var bx = Math.max(rightOf(Math.min(f.y, t.y), Math.max(f.b, t.b)), f.r, t.r) + 30;
+      pen(inkBracket(bx, Math.min(f.y, t.y) + 4, Math.max(f.b, t.b) - 4), color, 2.4, delay);
+      word(bx + 16, (Math.min(f.y, t.y) + Math.max(f.b, t.b)) / 2 + 6, n.text, color, delay + 0.3);
+    } else {
+      var y = t.y + t.h / 2 + 6; used.forEach(function (u) { if (Math.abs(u - y) < 30) y = u + 30; }); used.push(y);
+      if (kind === 'circle') pen(inkLoop(t, 3 + k), color, 2.2, delay);
+      var tip = kind === 'circle' ? [t.r + 14, t.y + t.h / 2] : [t.r + 8, t.y + t.h / 2], a = inkArrow([col - 10, y - 6], tip, y - 6 > tip[1] ? 0.1 : -0.1, 3 + 4 * k);
+      pen(a[0], color, 2.2, delay); pen(a[1], color, 2.2, delay + 0.55);
+      word(col, y, n.text, color, delay + 0.4);
+    }
+  });
+  if (!fits) return;
+  parts.forEach(function (f) { f(); });
+  host.classList.add('ink-drawn'); if (anim) { host.classList.add('ink-anim'); setTimeout(function () { host.classList.remove('ink-anim'); }, 3200); }
+  ink.drawn = true;
+}
+DRAW_HOOKS.push(inkAll);
+(function () {
+  if (typeof window === 'undefined' || !window.addEventListener) return;
+  var t = null, w = window.innerWidth;
+  window.addEventListener('resize', function () { if (window.innerWidth === w) return; w = window.innerWidth; clearTimeout(t); t = setTimeout(inkAll, 120); });
+  /* the page's text is rendered from script, so fonts.ready can resolve before the web fonts start loading: redraw on every
+     finished font load too, or a note measured against a fallback face points at the wrong spot */
+  try { if (document.fonts) { if (document.fonts.ready) document.fonts.ready.then(inkAll); if (document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', inkAll); } } catch (e) {}
+})();
+
 /* the registries, for the self-check and the node test (window.__RR) */
-expose({ MTS: MTS, EXAMS: EXAMS, MEMOS: MEMOS, GV: GV, TBS: TBS, SLS: SLS, TGS: TGS, gvSpec: gvSpec, graph: graph, plot: plot, isDone: isDone });
+expose({ MTS: MTS, EXAMS: EXAMS, MEMOS: MEMOS, GV: GV, TBS: TBS, SLS: SLS, TGS: TGS, gvSpec: gvSpec, graph: graph, plot: plot, isDone: isDone, INKS: INKS, steps: steps, annotate: annotate, inkDraw: inkDraw });
 
 /* selfcheck-core.js: window.__selfCheck() for every Calc I page (v2, 2026-10-10). Owner: task F01.
    The contract (../../interactive-health/SELFCHECK.md): __selfCheck() -> Promise<{ ok, checks: [{ name, ok, detail? }] }>.
