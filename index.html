@@ -2818,8 +2818,8 @@ var selfcheck = (function () {
 
 /* ---------------- links and small helpers ---------------- */
 var PAUL = 'https://tutorial.math.lamar.edu/';
-var U_INTERP = PAUL + 'Classes/CalcI/DerivativeInterp.aspx', U_INTERP_P = PAUL + 'Problems/CalcI/DerivativeInterp.aspx';
-var U_SHAPE = PAUL + 'Classes/CalcI/ShapeofGraphPtI.aspx', U_SHAPE_P = PAUL + 'Problems/CalcI/ShapeofGraphPtI.aspx';
+var U_INTERP = PAUL + 'Classes/CalcI/DerivativeInterp.aspx';
+var U_SHAPE = PAUL + 'Classes/CalcI/ShapeofGraphPtI.aspx';
 var U_DEF = PAUL + 'Classes/CalcI/DefnOfDerivative.aspx';
 
 function para(text, cls) { return '<p class="ptext' + (cls ? ' ' + cls : '') + '">' + P(text) + '</p>'; }
@@ -3112,10 +3112,10 @@ function rvRulesHTML() {
 
 /* ---------------- page ---------------- */
 function page() {
-  return header('Sketching the Derivative', [['#sec-meter', 'Meter'], ['#sec-sketch', 'Sketch'], ['#sec-nodiff', 'No Derivative'], ['#sec-reverse', 'f From f′'], ['#sec-back', 'Back to Paul']]) +
+  return header('Sketching the Derivative', [['#sec-meter', 'Meter'], ['#sec-sketch', 'Sketch'], ['#sec-nodiff', 'No Derivative'], ['#sec-reverse', 'f From f′'], ['#sec-back', 'Back to Your Unit']]) +
     '<main id="top">' + hero({ kicker: 'Calculus I · Units 4 and 9', title: 'Sketching the Derivative', dek: 'Read the graph of f′ from a graph of f, and read f from a graph of f′.' }) +
     prose('', ['Example 4 of Paul’s [Interpretation of the Derivative](' + U_INTERP + ') sketches `f′` from a graph of `f`. Here you measure slopes along three graphs, sketch `f′` yourself with a check on every point, and find where `f′` does not exist.',
-      'In Unit 9, use [Reading f From f′](#sec-reverse) before Practice Problem 3 of Paul’s [The Shape of a Graph, Part I](' + U_SHAPE + '), which gives a graph of `f′` instead of `f`.']) +
+      'In Unit 9, section 4, [Reading f From f′](#sec-reverse), works the other way: it starts from a graph of `f′` and asks what `f` does.']) +
 
     sec('sec-meter', '1', 'The Slope Meter', '') +
     prose('', ['The value of `f′` at a point is the slope of the tangent line there. Drag the point along the graph of `f`. Press Drop a point to plot `f′(x)` on the lower graph, directly below the point.']) +
@@ -3140,9 +3140,9 @@ function page() {
     col(rvRulesHTML() + para('Mark each interval and each zero of `f′` below.') +
       toggle('rv', ['Case 1', 'Case 2'], { label: 'Choose a graph of f′', redraw: ['rv'] }) + blk('rv', rvHTML)) +
 
-    sec('sec-back', '', 'Back to Paul', '') +
-    prose('', ['In Unit 4, return to [Interpretation of the Derivative](' + U_INTERP + ') and do [Practice Problems 5 and 6](' + U_INTERP_P + '), which ask for a sketch of `f′` from a graph of `f`.',
-      'In Unit 9, do [Practice Problem 3 of The Shape of a Graph, Part I](' + U_SHAPE_P + ').']) + '</main>';
+    sec('sec-back', '', 'Back to Your Unit', '') +
+    prose('', ['In Unit 4, return to the end of section 3 of Unit 4: Continuity and the Derivative.',
+      'In Unit 9, return to Unit 9: What Derivatives Tell You and continue with section 6, The Shape of a Graph, Part II.']) + '</main>';
 }
 expose({ MG: MG, SK: SK, RV: RV, fW: fW, fJ: fJ, skJudge: skJudge, skFromView: skFromView, rvRows: rvRows, meterReadout: meterReadout });
 mount(page());
